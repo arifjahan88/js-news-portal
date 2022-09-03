@@ -33,6 +33,16 @@ const Loadnewsdetails = (cat_id) => {
 const displaycatagorydetails = catagories =>{
     const detailscontainer = document.getElementById('details-container')
     detailscontainer.textContent = '';
+    console.log(catagories)
+
+    // Display No phone Found
+    const itemlength = document.getElementById('number-length');
+    if(catagories.length > 0){
+        itemlength.innerText = catagories.length;
+    }
+    else{
+        itemlength.innerText = "No";
+    }
 
     catagories.forEach(catagory => {
         //console.log(catagory);
