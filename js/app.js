@@ -12,14 +12,10 @@ const displaycatagories = catagories =>{
         // console.log(catagory);
         const catagorypera = document.createElement('a');
         catagorypera.innerHTML = `
-            <a onclick="Loadnewsdetails('${catagory.category_id}')" class="navbar-brand fw-bold" href="#">${catagory.category_name}</a>
+            <a onclick="Loadnewsdetails('${catagory.category_id}')" class="navbar-brand fw-bold text-primary" href="#">${catagory.category_name}</a>
         `
         catagorysection.appendChild(catagorypera);
     });
-    
-
-    
-
 }
 
 const Loadnewsdetails = (cat_id) => {
@@ -33,23 +29,35 @@ const Loadnewsdetails = (cat_id) => {
 const displaycatagorydetails = catagories =>{
     const detailscontainer = document.getElementById('details-container')
     detailscontainer.textContent = '';
-    console.log(catagories)
+    //console.log(catagories[0].details)
+
+    // Sorting the list
+    var total_view = catagories.slice(0);
+    total_view.sort(function(a,b) {
+        return b.total_view - a.total_view;
+    });
+    console.log('by date:');
+    console.log(total_view);
+
 
     // Display No phone Found
     const itemlength = document.getElementById('number-length');
+    const nomessagecontainer = document.getElementById('no-message-container');
     if(catagories.length > 0){
+        nomessagecontainer.classList.remove('d-none')
         itemlength.innerText = catagories.length;
     }
     else{
         itemlength.innerText = "No";
     }
 
-    catagories.forEach(catagory => {
+    // Add Card Body
+    total_view.forEach(catagory => {
         //console.log(catagory);
         const catagorydiv = document.createElement('div');
         catagorydiv.classList.add('row', 'shadow', 'p-3', 'mb-5', 'bg-body', 'rounded');
         catagorydiv.innerHTML = `
-    <div class="col-md-4 h-100">
+    <div class="col-md-4">
         <img src="${catagory.thumbnail_url}" class="img-fluid rounded-start" alt="..." />
     </div>
     <div class="col-md-8">
@@ -60,11 +68,10 @@ const displaycatagorydetails = catagories =>{
         </p>
         <p class="card-text">
         <div class="d-flex justify-content-between">
-        <div>
-        <img style="width:30px"; class="rounded-circle" src="${catagory.author.img}" class="img-fluid rounded-start" alt="..." />
+        <div class="d-sm-flex gap-2">
+        <div><img style="width:30px"; class="rounded-circle" src="${catagory.author.img}" class="img-fluid rounded-start" alt="..." /></div>
         <small class="text-muted pe-5"> ${catagory.author.name}</small>
         <small class="text-muted">Rating : ${catagory.total_view}</small>
-        
     </p>
     </div>
     <div>
@@ -100,7 +107,7 @@ const displaymodaldata = (data) =>{
         <p>Name : ${data.author ? data.author.name : 'No Data Available'}</p>
         <p>Published Date : ${data.author.published_date}</p>
     `
-    console.log(data.title)
+    // console.log(data.title)
 }
 
 const togglespinner = isloading =>{
