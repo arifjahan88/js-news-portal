@@ -7,6 +7,7 @@ const loadcatagories = async() =>{
 
 const displaycatagories = catagories =>{
     const catagorysection = document.getElementById('catagory-section');
+    togglespinner(true);
     catagories.forEach(catagory => {
         // console.log(catagory);
         const catagorypera = document.createElement('a');
@@ -15,6 +16,10 @@ const displaycatagories = catagories =>{
         `
         catagorysection.appendChild(catagorypera);
     });
+    
+
+    
+
 }
 
 const Loadnewsdetails = (cat_id) => {
@@ -30,7 +35,7 @@ const displaycatagorydetails = catagories =>{
     detailscontainer.textContent = '';
 
     catagories.forEach(catagory => {
-        console.log(catagory);
+        //console.log(catagory);
         const catagorydiv = document.createElement('div');
         catagorydiv.classList.add('row', 'shadow', 'p-3', 'mb-5', 'bg-body', 'rounded');
         catagorydiv.innerHTML = `
@@ -41,19 +46,61 @@ const displaycatagorydetails = catagories =>{
     <div class="card-body">
         <h5 class="card-title">${catagory.title}</h5>
         <p class="card-text">
-            ${catagory.details}
+            ${catagory.details.slice(0,500)}....
         </p>
         <p class="card-text">
-            <small class="text-muted pe-5">Auther : ${catagory.author.name}</small>
-            <small class="text-muted">Rating : ${catagory.rating.number}</small>
-        </p>
+        <div class="d-flex justify-content-between">
+        <div>
+        <img style="width:30px"; class="rounded-circle" src="${catagory.author.img}" class="img-fluid rounded-start" alt="..." />
+        <small class="text-muted pe-5"> ${catagory.author.name}</small>
+        <small class="text-muted">Rating : ${catagory.total_view}</small>
+        
+    </p>
+    </div>
+    <div>
+    <!-- Button trigger modal -->
+    <a onclick="loadmodaldata('${catagory._id}')"  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsmodal">Details</a>    
+    </div>
         </div>
+        </>
     </div>
         `
     detailscontainer.appendChild(catagorydiv);
+    // console.log(catagory);
     })
+    // Spinner Stop
+    togglespinner(false);
 
-    console.log(catagories);
+}
+
+const loadmodaldata = (news_id) =>{
+    const url = `https://openapi.programming-hero.com/api/news/${news_id}`
+    fetch(url)
+    .then(res => res.json())
+    .then(data => displaymodaldata(data.data[0]))
+}
+
+const displaymodaldata = (data) =>{
+     // Modal Part
+    const modaltitle = document.getElementById('detailsmodalLabel');
+    modaltitle.innerText =data.title;
+    const modaldetails = document.getElementById('modal-details');
+    modaldetails.innerHTML = `
+        <p class="text-center fw-bold">Contact Me</p>
+        <p>Name : ${data.author ? data.author.name : 'No Data Available'}</p>
+        <p>Published Date : ${data.author.published_date}</p>
+    `
+    console.log(data.title)
+}
+
+const togglespinner = isloading =>{
+    const loader = document.getElementById('loader');
+    if(isloading){
+        loader.classList.remove('d-none');
+    }
+    else{
+        loader.classList.add('d-none');
+    }
 }
 
 // const loadcatagorydetails = async() =>{
