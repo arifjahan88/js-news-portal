@@ -32,7 +32,7 @@ const displaycatagorydetails = catagories =>{
     catagories.forEach(catagory => {
         console.log(catagory);
         const catagorydiv = document.createElement('div');
-        catagorydiv.classList.add('row','g-2');
+        catagorydiv.classList.add('row', 'shadow', 'p-3', 'mb-5', 'bg-body', 'rounded');
         catagorydiv.innerHTML = `
     <div class="col-md-4 h-100">
         <img src="${catagory.thumbnail_url}" class="img-fluid rounded-start" alt="..." />
