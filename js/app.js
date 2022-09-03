@@ -1,8 +1,13 @@
 const loadcatagories = async() =>{
-    const url = `https://openapi.programming-hero.com/api/news/categories`;
-    const res = await fetch(url);
-    const data = await res.json();
-    displaycatagories(data.data.news_category);
+    try{
+        const url = `https://openapi.programming-hero.com/api/news/categories`;
+        const res = await fetch(url);
+        const data = await res.json();
+        displaycatagories(data.data.news_category);
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 
 const displaycatagories = catagories =>{
@@ -19,27 +24,21 @@ const displaycatagories = catagories =>{
 }
 
 const Loadnewsdetails = (cat_id) => {
-    const url = `https://openapi.programming-hero.com/api/news/category/${cat_id}`
-    fetch(url)
-    .then(res => res.json())
-    .then(data => displaycatagorydetails(data.data))
-    // console.log(url);
+    try{
+        const url = `https://openapi.programming-hero.com/api/news/category/${cat_id}`
+        fetch(url)
+        .then(res => res.json())
+        .then(data => displaycatagorydetails(data.data))
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 
 const displaycatagorydetails = catagories =>{
     const detailscontainer = document.getElementById('details-container')
     detailscontainer.textContent = '';
-    //console.log(catagories[0].details)
-
-    // Sorting the list
-    var total_view = catagories.slice(0);
-    total_view.sort(function(a,b) {
-        return b.total_view - a.total_view;
-    });
-    console.log('by date:');
-    console.log(total_view);
-
-
+    
     // Display No phone Found
     const itemlength = document.getElementById('number-length');
     const nomessagecontainer = document.getElementById('no-message-container');
@@ -50,10 +49,16 @@ const displaycatagorydetails = catagories =>{
     else{
         itemlength.innerText = "No";
     }
+    
+    // Sorting the list
+    var total_view = catagories.slice(0);
+    total_view.sort(function(a,b) {
+        return b.total_view - a.total_view;
+    });
 
     // Add Card Body
     total_view.forEach(catagory => {
-        //console.log(catagory);
+        console.log("Catagory", catagory);
         const catagorydiv = document.createElement('div');
         catagorydiv.classList.add('row', 'shadow', 'p-3', 'mb-5', 'bg-body', 'rounded');
         catagorydiv.innerHTML = `
@@ -83,18 +88,23 @@ const displaycatagorydetails = catagories =>{
     </div>
         `
     detailscontainer.appendChild(catagorydiv);
-    // console.log(catagory);
     })
+
     // Spinner Stop
     togglespinner(false);
 
 }
 
 const loadmodaldata = (news_id) =>{
-    const url = `https://openapi.programming-hero.com/api/news/${news_id}`
-    fetch(url)
-    .then(res => res.json())
-    .then(data => displaymodaldata(data.data[0]))
+    try{
+        const url = `https://openapi.programming-hero.com/api/news/${news_id}`
+        fetch(url)
+        .then(res => res.json())
+        .then(data => displaymodaldata(data.data[0]))
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 
 const displaymodaldata = (data) =>{
@@ -107,7 +117,6 @@ const displaymodaldata = (data) =>{
         <p>Name : ${data.author ? data.author.name : 'No Data Available'}</p>
         <p>Published Date : ${data.author.published_date}</p>
     `
-    // console.log(data.title)
 }
 
 const togglespinner = isloading =>{
@@ -120,13 +129,5 @@ const togglespinner = isloading =>{
     }
 }
 
-// const loadcatagorydetails = async() =>{
-//     const url = `https://openapi.programming-hero.com/api/news/0282e0e58a5c404fbd15261f11c2ab6a`;
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     displaycatagorydetails(data.data[0]);
-// }
-
-
 loadcatagories();
-//loadcatagorydetails();
+
